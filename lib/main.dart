@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:carros/pages/loginPage.dart';
+import 'package:carros/pages/homePage.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -10,34 +13,15 @@ class MyApp extends StatelessWidget {
       title: 'Carros',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.amber,
+        brightness: Brightness.light,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: MyHomePage(),
+      routes: {
+        LoginPage.routeName: (ctx) => LoginPage(),
+        HomePage.routeName: (ctx) => HomePage(),
+      },
+      home: LoginPage(),
     );
   }
-}
-
-class MyHomePage extends StatefulWidget {
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Carros'),),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Carros',),
-          ],
-        ),
-      ),
-    );
-  }
-
 }
