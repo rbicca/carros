@@ -1,7 +1,11 @@
-import 'package:carros/pages/homePage.dart';
 import 'package:flutter/material.dart';
+import 'package:carros/pages/homePage.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:carros/widgets/app_button.dart';
+import 'package:carros/services/login_api.dart';
+import 'package:carros/services/api_response.dart';
+import 'package:carros/model/usuario.dart';
+import 'package:carros/utils/alert.dart';
 
 class LoginPage extends StatefulWidget {
    static const routeName = '/login';
@@ -16,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final _ctrlLogin = TextEditingController();
   final _ctrlSenha = TextEditingController();
   final _focusSenha = FocusNode();
+
+  var _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +42,36 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 10),
             AppText('Senha', 'Informe a senha', controller: _ctrlSenha, validator: _validateSenha , keyboardType: TextInputType.number,  obscure: true, focusNode: _focusSenha),
             SizedBox(height: 20),
-            AppButton('Login', onPressed: _onLoginClick),
+            AppButton('Login', onPressed: _onLoginClick, isLoading: _isLoading,),
           ],
         ),),
       ); 
   }
 
-  _onLoginClick() {
+  _onLoginClick() async {
       if(!_formKey.currentState.validate()) { return; }
-      Navigator.of(context).pushNamed(HomePage.routeName);
+
+      String login = _ctrlLogin.text;
+      String senha = _ctrlSenha.text;
+
+      setState(() {
+        _isLoading = true;
+      });
+
+      ApiResponse response = await LoginApi.login(login, senha);
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if(response.ok) {
+        Usuario user = response.result;
+        print('logou como $user');
+        Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+      } else {
+        alert(context, response.msg);
+      }
+      
   }
 
   String _validateLogin(String text) {
