@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:carros/pages/loginPage.dart';
+import 'package:carros/model/usuario.dart';
 
 class DrawerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var url = 'http://0.gravatar.com/avatar/b5a78dcf43e642a99aed4ec83cfa36aa';
+    //var url = 'http://0.gravatar.com/avatar/b5a78dcf43e642a99aed4ec83cfa36aa';
+    
+    Future<Usuario> futureUser = Usuario.get();
 
     return SafeArea(
       child: Drawer(
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("Ronaldo Bicca"),
-              accountEmail: Text("ronaldo.bicca@gmail.com"),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(url),
-              ),
+            FutureBuilder<Usuario>(
+              future: futureUser,
+              builder: (ctx, snap){
+                Usuario user = snap.data;
+                return user !=  null ? _header(user) : Container();
+              } 
             ),
             ListTile(
               leading: Icon(Icons.star),
@@ -49,10 +52,21 @@ class DrawerList extends StatelessWidget {
         ),
       );
     }
+
+  UserAccountsDrawerHeader _header(Usuario user) {
+    return UserAccountsDrawerHeader(
+            accountName: Text(user.nome),
+            accountEmail: Text(user.email),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: NetworkImage(user.urlFoto),
+            ),
+          );
+  }
               
-    _onClickLogout(BuildContext context) {
-      Navigator.pop(context);
-       Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-    }
+  _onClickLogout(BuildContext context) {
+    Usuario.clear();
+    Navigator.pop(context);
+    Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+  }
 
 }

@@ -29,6 +29,7 @@ class LoginApi {
 
       if(response.statusCode == 200){
         final user = Usuario.fromJson(dados);
+        user.save();
         return ApiResponse.ok(user);
       } else {
         return ApiResponse.error(response.statusCode, dados['error']);

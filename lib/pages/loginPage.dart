@@ -24,6 +24,23 @@ class _LoginPageState extends State<LoginPage> {
   var _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    Future<Usuario> futureUsuario = Usuario.get();
+    futureUsuario.then((Usuario user){
+      if(user != null){
+        //Login automático
+         Navigator.of(context).pushReplacementNamed(HomePage.routeName);
+        // setState(() {
+        //   _ctrlLogin.text = user.login;  
+        // });
+      }
+    });
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Carros')),

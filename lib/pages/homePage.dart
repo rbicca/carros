@@ -1,80 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:carros/widgets/drawer_list.dart';
+import 'package:carros/widgets/carros_listivew.dart';
 import 'package:carros/services/carros_api.dart';
-import 'package:carros/model/carro.dart';
+import 'package:carros/utils/prefs.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   static const routeName = '/home';
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage>  with SingleTickerProviderStateMixin<HomePage> {
+  TabController _tabController;
+
+  _initTabs() async {
+    int tabIdx = await Prefs.getInt('tabIdx');
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.index = tabIdx;
+    setState(() {
+      _tabController.index = tabIdx;
+    });
+    _tabController.addListener((){
+      Prefs.setInt('tabIdx', _tabController.index);
+    });
+
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initTabs();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Carros')),
+      appBar: AppBar(
+        title: Text('Carros'), 
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [
+          Tab(text: 'Clássicos',),
+          Tab(text: 'Esportivos',),
+          Tab(text: 'Luxo',),
+        ]),
+      ),
       drawer: DrawerList(),
-      body: _body(),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+        CarrosListView(TipoCarro.classicos),
+        CarrosListView(TipoCarro.esportivos),
+        CarrosListView(TipoCarro.luxo),
+      ]),
     );
   }
-
-
-  _body() {
-
-    Future<List<Carro>> futureCarros = CarrosApi.getCarros();
-
-    return FutureBuilder(
-      future: futureCarros,
-      builder: (context, snapshot) {
-
-        if(snapshot.hasError) { return Center(child: Text('Erro ao buscar os carros', style: TextStyle(color: Colors.red),),); }
-
-        if(!snapshot.hasData) { return Center(child: CircularProgressIndicator(),); }
-
-        List<Carro> carros = snapshot.data;
-        return _listView(carros);
-      },
-    );
-
-  }
-
-  Padding _listView(List<Carro> carros) {
-    return Padding(
-    padding: const EdgeInsets.all(16.0),
-    child: ListView.builder(
-      itemCount: carros!= null ?  carros.length : 0,
-      itemBuilder: (ctx, i){
-        Carro c = carros[i];
-
-        // return Row(children: <Widget>[
-        //   Image.network(c.urlFoto, width: 150,),
-        //   Flexible(
-        //     child: Text(c.nome,  maxLines: 1,  overflow: TextOverflow.ellipsis,  style: TextStyle(fontSize: 22),)
-        //   ),
-        // ],);
-
-        return Card(
-          color: Colors.grey[100],
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Center(child: Image.network(c.urlFoto, width: 250,)),
-                Text(c.nome,  maxLines: 1,  overflow: TextOverflow.ellipsis,  style: TextStyle(fontSize: 22),),
-                Text('descrição...',  maxLines: 1,  overflow: TextOverflow.ellipsis,  style: TextStyle(fontSize: 14),),
-                ButtonBarTheme(
-                  data: ButtonBarTheme.of(ctx),
-                  child: ButtonBar(
-                    children: <Widget>[
-                      FlatButton(onPressed: (){}, child: Text('Detalhes'),),
-                      FlatButton(onPressed: (){}, child: Text('Share'),),
-                    ],
-                  ),
-                )
-            ],),
-          ),
-        );
-
-    }),
-  );
-  }
-
 }
