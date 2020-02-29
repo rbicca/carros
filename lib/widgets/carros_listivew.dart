@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:carros/model/carro.dart';
+import 'package:carros/pages/carroPage.dart';
 import 'package:carros/services/carros_api.dart';
+import 'package:carros/model/carro.dart';
 
 class CarrosListView extends StatefulWidget {
   final TipoCarro tipo;
@@ -12,8 +13,6 @@ class CarrosListView extends StatefulWidget {
 }
 
 class _CarrosListViewState extends State<CarrosListView>  with AutomaticKeepAliveClientMixin<CarrosListView> {
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +68,7 @@ class _CarrosListViewState extends State<CarrosListView>  with AutomaticKeepAliv
                   data: ButtonBarTheme.of(ctx),
                   child: ButtonBar(
                     children: <Widget>[
-                      FlatButton(onPressed: (){}, child: Text('Detalhes'),),
+                      FlatButton(onPressed:() => _onClickCarro(ctx, c) , child: Text('Detalhes'),),
                       FlatButton(onPressed: (){}, child: Text('Share'),),
                     ],
                   ),
@@ -81,5 +80,12 @@ class _CarrosListViewState extends State<CarrosListView>  with AutomaticKeepAliv
     }),
   );
   }
+
+  _onClickCarro(ctx, Carro c) {
+    Navigator.push(ctx, MaterialPageRoute(builder: (ctx) => CarroPage(c)));
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 
 }

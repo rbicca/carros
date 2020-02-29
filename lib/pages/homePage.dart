@@ -11,21 +11,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>  with SingleTickerProviderStateMixin<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin<HomePage> {
   TabController _tabController;
-
-  _initTabs() async {
-    int tabIdx = await Prefs.getInt('tabIdx');
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.index = tabIdx;
-    setState(() {
-      _tabController.index = tabIdx;
-    });
-    _tabController.addListener((){
-      Prefs.setInt('tabIdx', _tabController.index);
-    });
-
-  }
 
   @override
   void initState() {
@@ -34,27 +21,41 @@ class _HomePageState extends State<HomePage>  with SingleTickerProviderStateMixi
     _initTabs();
   }
 
+
+  _initTabs() async {
+    int index = await Prefs.getInt("tabIdx");
+
+    _tabController = TabController(length: 3, vsync: this);
+    setState(() {
+      _tabController.index = index;
+    });
+
+    _tabController.addListener(() {
+      Prefs.setInt("tabIdx", _tabController.index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Carros'), 
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: [
-          Tab(text: 'Clássicos',),
-          Tab(text: 'Esportivos',),
-          Tab(text: 'Luxo',),
+        appBar: AppBar(
+    title: Text('Carros'), 
+    bottom: _tabController == null ? null : TabBar(
+      controller: _tabController,
+      tabs: [
+      Tab(text: 'Clássicos',),
+      Tab(text: 'Esportivos',),
+      Tab(text: 'Luxo',),
+    ]),
+        ),
+        drawer: DrawerList(),
+        body:  _tabController == null ? null :  TabBarView(
+    controller: _tabController,
+    children: [
+    CarrosListView(TipoCarro.classicos),
+    CarrosListView(TipoCarro.esportivos),
+    CarrosListView(TipoCarro.luxo),
         ]),
-      ),
-      drawer: DrawerList(),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-        CarrosListView(TipoCarro.classicos),
-        CarrosListView(TipoCarro.esportivos),
-        CarrosListView(TipoCarro.luxo),
-      ]),
-    );
+      );
   }
 }
