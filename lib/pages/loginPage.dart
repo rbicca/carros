@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:carros/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:carros/pages/homePage.dart';
 import 'package:carros/widgets/app_text.dart';
@@ -21,7 +24,9 @@ class _LoginPageState extends State<LoginPage> {
   final _ctrlSenha = TextEditingController();
   final _focusSenha = FocusNode();
 
-  var _isLoading = false;
+  //var _isLoading = false;
+  final _bloc = LoginBloc();
+  
 
   @override
   void initState() {
@@ -38,6 +43,13 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
 
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _bloc.dipose();
   }
 
   @override
@@ -59,7 +71,11 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 10),
             AppText('Senha', 'Informe a senha', controller: _ctrlSenha, validator: _validateSenha , keyboardType: TextInputType.number,  obscure: true, focusNode: _focusSenha),
             SizedBox(height: 20),
-            AppButton('Login', onPressed: _onLoginClick, isLoading: _isLoading,),
+            StreamBuilder<bool>(
+              stream: _bloc.stream,
+              initialData: false,
+              builder: (ctx, snapshot){ return AppButton('Login', onPressed: _onLoginClick, isLoading: snapshot.data ?? false,); },
+            ),
           ],
         ),),
       ); 
@@ -71,15 +87,16 @@ class _LoginPageState extends State<LoginPage> {
       String login = _ctrlLogin.text;
       String senha = _ctrlSenha.text;
 
-      setState(() {
-        _isLoading = true;
-      });
+      // setState(() {
+      //   _isLoading = true;
+      // });
+      
+      ApiResponse response = await _bloc.login(login, senha);
 
-      ApiResponse response = await LoginApi.login(login, senha);
-
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
+       
 
       if(response.ok) {
         Usuario user = response.result;
