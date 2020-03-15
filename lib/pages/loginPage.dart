@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:carros/pages/homePage.dart';
 import 'package:carros/widgets/app_text.dart';
 import 'package:carros/widgets/app_button.dart';
-import 'package:carros/services/login_api.dart';
 import 'package:carros/services/api_response.dart';
 import 'package:carros/model/usuario.dart';
 import 'package:carros/utils/alert.dart';
