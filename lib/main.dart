@@ -1,3 +1,4 @@
+import 'package:carros/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 
 import 'package:carros/pages/loginPage.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         LoginPage.routeName: (ctx) => LoginPage(),
         HomePage.routeName: (ctx) => HomePage(),
       },
-      home: LoginPage(),
+      home: SplashPage(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:carros/favoritos/carro_dao.dart';
 import 'package:carros/model/usuario.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -28,8 +29,14 @@ class CarrosApi {
 
     final response = await http.get(url, headers: headers);
     final List dados = jsonDecode(response.body);
+    final carros = dados.map<Carro>((c) => Carro.fromJson(c)).toList();
+
+    final dao = CarroDAO();
+    carros.forEach((c) => dao.save(c));
+    //Sintaxe alternativa
+    //carros.forEach(dao.save);  //Pega o parametro c e repassa automaticamente para o unico parametro da funcao save
     
-    return dados.map<Carro>((c) => Carro.fromJson(c)).toList();
+    return carros;
 
   }
 
