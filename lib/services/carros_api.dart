@@ -29,7 +29,7 @@ class CarrosApi {
 
     final response = await http.get(url, headers: headers);
     final List dados = jsonDecode(response.body);
-    final carros = dados.map<Carro>((c) => Carro.fromJson(c)).toList();
+    final carros = dados.map<Carro>((c) => Carro.fromMap(c)).toList();
 
     final dao = CarroDAO();
     carros.forEach((c) => dao.save(c));
