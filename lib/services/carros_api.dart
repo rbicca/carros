@@ -30,11 +30,6 @@ class CarrosApi {
     final response = await http.get(url, headers: headers);
     final List dados = jsonDecode(response.body);
     final carros = dados.map<Carro>((c) => Carro.fromMap(c)).toList();
-
-    final dao = CarroDAO();
-    carros.forEach((c) => dao.save(c));
-    //Sintaxe alternativa
-    //carros.forEach(dao.save);  //Pega o parametro c e repassa automaticamente para o unico parametro da funcao save
     
     return carros;
 

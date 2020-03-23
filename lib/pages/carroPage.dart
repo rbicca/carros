@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/services/lori_api.dart';
 import 'package:flutter/material.dart';
 import 'package:carros/model/carro.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class CarroPage extends StatefulWidget {
 
@@ -57,7 +59,7 @@ class _CarroPageState extends State<CarroPage> {
       if(widget.carro.urlFoto != null) {
         return ListView(
           children: <Widget>[
-            Image.network(widget.carro.urlFoto),
+            CachedNetworkImage(imageUrl:widget.carro.urlFoto),
             _bloco1(),
             Divider(),
             _bloco2(),

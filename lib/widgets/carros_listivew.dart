@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carros/pages/carroPage.dart';
 import 'package:carros/model/carro.dart';
@@ -24,7 +25,7 @@ class CarrosListView extends StatelessWidget{
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Center(child: Image.network(c.urlFoto, width: 250,)),
+                    Center(child: CachedNetworkImage(imageUrl: c.urlFoto, width: 250,)),
                     Text(c.nome,  maxLines: 1,  overflow: TextOverflow.ellipsis,  style: TextStyle(fontSize: 22),),
                     Text('descrição...',  maxLines: 1,  overflow: TextOverflow.ellipsis,  style: TextStyle(fontSize: 14),),
                     ButtonBarTheme(
