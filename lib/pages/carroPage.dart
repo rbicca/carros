@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carros/services/lori_api.dart';
 import 'package:flutter/material.dart';
 import 'package:carros/model/carro.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class CarroPage extends StatefulWidget {
 

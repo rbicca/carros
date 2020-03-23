@@ -1,4 +1,3 @@
-import 'package:carros/favoritos/carro_dao.dart';
 import 'package:carros/model/usuario.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

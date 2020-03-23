@@ -1,7 +1,8 @@
 //Gerador automático de classes Dart
 //https://javiercbk.github.io/json_to_dart/
 
-import 'package:carros/model/entity.dart';
+
+import 'package:carros/utils/sql/entity.dart';
 
 class Carro extends Entity {
 
