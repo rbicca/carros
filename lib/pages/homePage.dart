@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   _initTabs() async {
     int index = await Prefs.getInt("tabIdx");
 
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     setState(() {
       _tabController.index = index;
     });
@@ -43,9 +43,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     bottom: _tabController == null ? null : TabBar(
       controller: _tabController,
       tabs: [
-      Tab(text: 'Clássicos',),
-      Tab(text: 'Esportivos',),
-      Tab(text: 'Luxo',),
+      Tab(text: 'Clássicos',icon: Icon(Icons.directions_car),),
+      Tab(text: 'Esportivos',icon: Icon(Icons.directions_car),),
+      Tab(text: 'Luxo',icon: Icon(Icons.directions_car),),
+      Tab(text: 'Favoritos',icon: Icon(Icons.favorite),),
     ]),
         ),
         drawer: DrawerList(),
@@ -55,6 +56,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     CarrosPage(TipoCarro.classicos),
     CarrosPage(TipoCarro.esportivos),
     CarrosPage(TipoCarro.luxo),
+    Container(),
         ]),
       );
   }

@@ -4,17 +4,17 @@ import 'package:carros/services/lori_api.dart';
 import 'package:flutter/material.dart';
 import 'package:carros/model/carro.dart';
 
-class CarroPage extends StatefulWidget {
+class FavoritosPage extends StatefulWidget {
 
   final Carro carro;
 
-  CarroPage(this.carro);
+  FavoritosPage(this.carro);
 
   @override
-  _CarroPageState createState() => _CarroPageState();
+  _FavoritosPageState createState() => _FavoritosPageState();
 }
 
-class _CarroPageState extends State<CarroPage> {
+class _FavoritosPageState extends State<FavoritosPage> {
 
   final _loripsumApiBloc = LoripsumBloc();
 

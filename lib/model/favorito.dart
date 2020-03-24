@@ -1,5 +1,3 @@
-
-
 import 'package:carros/utils/sql/entity.dart';
 
 class Favorito extends Entity {
